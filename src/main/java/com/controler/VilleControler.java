@@ -30,4 +30,21 @@ public class VilleControler {
 		return ville;
 	}
 
+	// Methode POST
+	@RequestMapping(value = "/ville", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean appelPut(@RequestParam(required = true, value = "codeCommune") String codeCommune,
+			@RequestParam(required = true, value = "nomCommune") String nomCommune,
+			@RequestParam(required = true, value = "codePostal") String codePostal,
+			@RequestParam(required = true, value = "libelleAcheminement") String libelleAcheminement,
+			@RequestParam(required = false, value = "ligne") String ligne,
+			@RequestParam(required = true, value = "latitude") float latitude,
+			@RequestParam(required = true, value = "longitude") float longitude)
+			throws ClassNotFoundException, SQLException {
+		System.out.println("Appel POST");
+		boolean reponse = villeService.createVille(codeCommune, nomCommune, codePostal, libelleAcheminement, ligne,
+				latitude, longitude);
+		return reponse;
+	}
+
 }
