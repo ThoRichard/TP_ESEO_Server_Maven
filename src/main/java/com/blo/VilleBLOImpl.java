@@ -15,13 +15,13 @@ public class VilleBLOImpl implements VilleBLO {
 	private VilleDAO villeDAO;
 
 	/**
-	 * @param param, code postal ou vide 
+	 * @param codePostal, code postal ou vide
 	 * @return liste des villes
 	 */
-	public ArrayList<Ville> getInfoVille(String param) {
+	public ArrayList<Ville> getInfoVille(String codePostal) {
 		ArrayList<Ville> ville = null;
-		if (param != null) {
-			ville = villeDAO.getInfoVilles(param);
+		if (codePostal != null) {
+			ville = villeDAO.getInfoVilles(codePostal);
 		} else {
 			ville = villeDAO.getInfoVille();
 		}
@@ -29,24 +29,21 @@ public class VilleBLOImpl implements VilleBLO {
 	}
 
 	/**
-	 * @param codeCommune,         clé primaire (code INSEE)
-	 * @param nomCommune,          le nom de la commune
-	 * @param codePostal,          le code postal
-	 * @param libelleAcheminement, libelle postal
-	 * @param ligne,               complément de localisation
-	 * @param latitude,            latitude en degrés décimaux
-	 * @param longitude,           longitude en degrés décimaux
+	 * @param ville, ville à insérer
 	 * @return si l'insertion s'est correctement déroulé
 	 */
-	public boolean createVille(String codeCommune, String nomCommune, String codePostal, String libelleAcheminement,
-			String ligne, float latitude, float longitude) {
-		boolean reponse;
-		if (ligne != null) {
-			reponse = villeDAO.createVille(codeCommune, nomCommune, codePostal, libelleAcheminement, ligne, latitude, longitude);
-		} else {
-			reponse = villeDAO.createVille(codeCommune, nomCommune, codePostal, libelleAcheminement, null, latitude, longitude);
-		}
+	public boolean createVille(Ville ville) {
+		boolean reponse = villeDAO.createVille(ville);
 		return reponse;
+	}
+
+	public boolean updateVille(Ville ville) {
+		boolean reponse = villeDAO.updateVille(ville);
+		return reponse;
+	}
+	
+	public void deleteVille(String codeCommune) {
+		villeDAO.deleteVille(codeCommune);
 	}
 
 }

@@ -14,22 +14,19 @@ public interface VilleDAO {
 
 	/**
 	 * 
-	 * @param param, code postal 
+	 * @param codePostal, code postal 
 	 * @return liste des villes correspondantes au code postal
 	 */
-	public ArrayList<Ville> getInfoVilles(String param);
+	public ArrayList<Ville> getInfoVilles(String codePostal);
 
 	/**
-	 * @param codeCommune,         clé primaire (code INSEE)
-	 * @param nomCommune,          le nom de la commune
-	 * @param codePostal,          le code postal
-	 * @param libelleAcheminement, libelle postal
-	 * @param ligne,               complément de localisation
-	 * @param latitude,            latitude en degrés décimaux
-	 * @param longitude,           longitude en degrés décimaux
+	 * @param ville,         ville à insérer
 	 * @return si l'insertion s'est correctement déroulé
 	 */
-	public boolean createVille(String codeCommune, String nomCommune, String codePostal, String libelleAcheminement,
-			String ligne, float latitude, float longitude);
+	public boolean createVille(Ville ville);
+	
+	public boolean updateVille(Ville ville);
+	
+	public void deleteVille(String codeCommune);
 
 }

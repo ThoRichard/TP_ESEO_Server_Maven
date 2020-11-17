@@ -10,16 +10,20 @@ public class Ville {
 	public float latitude; 
 	public float longitude; 
 	
-	public Ville(String codeCommune, String nomCommune, String codePostal, String libelleAcheminement,
-			String ligne, float latitude, float longitude) {
+	public Ville() {
+
+	}
+
+	public Ville(String codeCommune, String nomCommune, String codePostal, String libelleAcheminement, String ligne,
+			float latitude, float longitude) {
 		this.codeCommune = codeCommune;
 		this.nomCommune = nomCommune;
-		this.codePostal = codePostal; 
+		this.codePostal = codePostal;
 		this.libelleAcheminement = libelleAcheminement;
 		this.ligne = ligne;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		}
+	}
 	
 	/**
 	 * @return the latitude

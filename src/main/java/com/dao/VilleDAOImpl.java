@@ -47,12 +47,12 @@ public class VilleDAOImpl implements VilleDAO {
 	 * @return la liste des villes correspondantes au code postal entré en
 	 *         paramètres
 	 */
-	public ArrayList<Ville> getInfoVilles(String param) {
+	public ArrayList<Ville> getInfoVilles(String codePostal) {
 		ArrayList<Ville> villes = new ArrayList<Ville>();
 		String requete = "SELECT * FROM ville_france WHERE code_postal = ?";
 		try (Connection con = JDBCConfiguration.getConnexionBDD()) {
 			PreparedStatement ps = con.prepareStatement(requete);
-			ps.setString(1, param);
+			ps.setString(1, codePostal);
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
 					Ville ville = new Ville(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
@@ -84,24 +84,23 @@ public class VilleDAOImpl implements VilleDAO {
 	 * @param longitude,           longitude en degrés décimaux
 	 * @return si l'insertion s'est correctement déroulé
 	 */
-	public boolean createVille(String codeCommune, String nomCommune, String codePostal, String libelleAcheminement,
-			String ligne, float latitude, float longitude) {
+	public boolean createVille(Ville ville) {
 		boolean booleanInsert = false;
 		String requete = "INSERT INTO ville_france (Code_commune_INSEE, Nom_commune, Code_postal, Libelle_acheminement,Ligne_5, Latitude, Longitude) VALUES (?,?,?,?,?,?,?)";
 
 		try (Connection con = JDBCConfiguration.getConnexionBDD();) {
 			PreparedStatement ps = con.prepareStatement(requete);
-			ps.setString(1, codeCommune);
-			ps.setString(2, nomCommune);
-			ps.setString(3, codePostal);
-			ps.setString(4, libelleAcheminement);
-			if (ligne != null) {
-				ps.setString(5, ligne);
+			ps.setString(1, ville.getCodeCommune());
+			ps.setString(2, ville.getNomCommune());
+			ps.setString(3, ville.getCodePostal());
+			ps.setString(4, ville.getLibelleAcheminement());
+			if (ville.getLigne() != null) {
+				ps.setString(5, ville.getLigne());
 			} else {
 				ps.setString(5, "");
 			}
-			ps.setFloat(6, latitude);
-			ps.setFloat(7, longitude);
+			ps.setFloat(6, ville.getLatitude());
+			ps.setFloat(7, ville.getLongitude());
 
 			int rs = ps.executeUpdate();
 			if (rs >= 1) {
@@ -115,6 +114,57 @@ public class VilleDAOImpl implements VilleDAO {
 			System.out.println("Une erreur s'est produite lors de la connexion à la base");
 		}
 		return booleanInsert;
+	}
+
+	@Override
+	public boolean updateVille(Ville ville) {
+		boolean booleanInsert = false;
+		String requete = "UPDATE ville_france "
+				+ "SET Nom_commune = (CASE WHEN ? is not null THEN ? ELSE Nom_commune END), Code_postal = (CASE WHEN ? is not null THEN ? ELSE Code_postal END), Libelle_acheminement = (CASE WHEN ? is not null THEN ? ELSE Libelle_acheminement END), "
+				+ "Ligne_5 = (CASE WHEN ? is not null THEN ? ELSE Ligne_5 END), Latitude = (CASE WHEN ? != 0.0 THEN ? ELSE Latitude END), Longitude = (CASE WHEN ? != 0.0 THEN ? ELSE Longitude END) "
+				+ "WHERE Code_commune_INSEE = ?";
+		try (Connection con = JDBCConfiguration.getConnexionBDD();) {
+			PreparedStatement ps = con.prepareStatement(requete);
+			ps.setString(1, ville.getNomCommune());
+			ps.setString(2, ville.getNomCommune());
+			ps.setString(3, ville.getCodePostal());
+			ps.setString(4, ville.getCodePostal());
+			ps.setString(5, ville.getLibelleAcheminement());
+			ps.setString(6, ville.getLibelleAcheminement());
+			ps.setString(7, ville.getLigne());
+			ps.setString(8, ville.getLigne());
+			ps.setFloat(9, ville.getLatitude());
+			ps.setFloat(10, ville.getLatitude());
+			ps.setFloat(11, ville.getLongitude());
+			ps.setFloat(12, ville.getLongitude());
+			ps.setString(13, ville.getCodeCommune());
+
+			int rs = ps.executeUpdate();
+			if (rs >= 1) {
+				booleanInsert = true;
+			}
+
+		} catch (SQLException e) {
+			e.getErrorCode();
+			e.getMessage();
+			e.printStackTrace();
+			System.out.println("Une erreur s'est produite lors de la connexion à la base");
+		}
+		return booleanInsert;
+	}
+
+	public void deleteVille(String codeCommune) {
+		String requete = "DELETE FROM ville_france WHERE Code_commune_INSEE = ?";
+		try (Connection con = JDBCConfiguration.getConnexionBDD();) {
+			PreparedStatement ps = con.prepareStatement(requete);
+			ps.setString(1, codeCommune);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.getErrorCode();
+			e.getMessage();
+			e.printStackTrace();
+			System.out.println("Une erreur s'est produite lors de la connexion à la base");
+		}
 	}
 
 }

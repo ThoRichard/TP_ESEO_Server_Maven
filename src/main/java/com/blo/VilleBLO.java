@@ -5,25 +5,30 @@ import java.util.ArrayList;
 import com.dto.Ville;
 
 public interface VilleBLO {
+
+	/**
+	 * 
+	 * @param codePostal, code postal
+	 * @return liste des villes
+	 */
+	public ArrayList<Ville> getInfoVille(String codePostal);
+
+	/**
+	 * @param ville, ville à insérer
+	 * @return si l'insertion s'est correctement déroulé
+	 */
+	public boolean createVille(Ville ville);
+
+	/**
+	 * @param ville, ville à modifier
+	 * @return si la ville a bien été modifié
+	 */
+	public boolean updateVille(Ville ville);
 	
 	/**
 	 * 
-	 * @param param, code postal
-	 * @return liste des villes 
+	 * @param codeCommune, code INSEE de la commune
 	 */
-	public ArrayList<Ville> getInfoVille(String param);
-
-	/**
-	 * @param codeCommune,         clé primaire (code INSEE)
-	 * @param nomCommune,          le nom de la commune
-	 * @param codePostal,          le code postal
-	 * @param libelleAcheminement, libelle postal
-	 * @param ligne,               complément de localisation
-	 * @param latitude,            latitude en degrés décimaux
-	 * @param longitude,           longitude en degrés décimaux
-	 * @return si l'insertion s'est correctement déroulé
-	 */
-	public boolean createVille(String codeCommune, String nomCommune, String codePostal, String libelleAcheminement,
-			String ligne, float latitude, float longitude);
+	public void deleteVille(String codeCommune);
 
 }
