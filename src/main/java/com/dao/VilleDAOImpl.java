@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 @Repository
 public class VilleDAOImpl implements VilleDAO {
 	// assumes the current class is called MyLogger
-	private final static Logger LOGGER = Logger.getLogger(VilleDAO.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(VilleDAOImpl.class.getName());
 
 	/**
 	 * @return la liste de toutes les villes
@@ -28,8 +28,9 @@ public class VilleDAOImpl implements VilleDAO {
 
 		String requete = "SELECT * FROM ville_france";
 
-		try (Connection con = JDBCConfiguration.getConnexionBDD(); Statement stmt = con.createStatement()) {
-			ResultSet rs = stmt.executeQuery(requete);
+		try (Connection con = JDBCConfiguration.getConnexionBDD();
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(requete);) {
 			while (rs.next()) {
 				/**
 				 * ordre des variables dans le constructeur codeCommune, nomCommune, codePostal,
@@ -44,7 +45,8 @@ public class VilleDAOImpl implements VilleDAO {
 			stmt.close();
 			con.close();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(), e);
+			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(),
+					e);
 		}
 		return villes;
 	}
@@ -57,8 +59,8 @@ public class VilleDAOImpl implements VilleDAO {
 	public ArrayList<Ville> getInfoVilles(String codePostal) {
 		ArrayList<Ville> villes = new ArrayList<Ville>();
 		String requete = "SELECT * FROM ville_france WHERE code_postal = ?";
-		try (Connection con = JDBCConfiguration.getConnexionBDD()) {
-			PreparedStatement ps = con.prepareStatement(requete);
+		try (Connection con = JDBCConfiguration.getConnexionBDD();
+				PreparedStatement ps = con.prepareStatement(requete);) {
 			ps.setString(1, codePostal);
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
@@ -67,11 +69,13 @@ public class VilleDAOImpl implements VilleDAO {
 					villes.add(ville);
 				}
 			} catch (SQLException e) {
-				LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la récupération des villes : " + e.getMessage(), e);
+				LOGGER.log(Level.WARNING,
+						"Une erreur s'est produite lors de la récupération des villes : " + e.getMessage(), e);
 			}
 			ps.close();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(), e);
+			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(),
+					e);
 		}
 		return villes;
 	}
@@ -84,8 +88,8 @@ public class VilleDAOImpl implements VilleDAO {
 		boolean booleanInsert = false;
 		String requete = "INSERT INTO ville_france (Code_commune_INSEE, Nom_commune, Code_postal, Libelle_acheminement,Ligne_5, Latitude, Longitude) VALUES (?,?,?,?,?,?,?)";
 
-		try (Connection con = JDBCConfiguration.getConnexionBDD();) {
-			PreparedStatement ps = con.prepareStatement(requete);
+		try (Connection con = JDBCConfiguration.getConnexionBDD();
+				PreparedStatement ps = con.prepareStatement(requete);) {
 			ps.setString(1, ville.getCodeCommune());
 			ps.setString(2, ville.getNomCommune());
 			ps.setString(3, ville.getCodePostal());
@@ -104,7 +108,8 @@ public class VilleDAOImpl implements VilleDAO {
 			}
 			ps.close();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(), e);
+			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(),
+					e);
 		}
 		return booleanInsert;
 	}
@@ -118,8 +123,8 @@ public class VilleDAOImpl implements VilleDAO {
 				+ "SET Nom_commune = (CASE WHEN ? is not null THEN ? ELSE Nom_commune END), Code_postal = (CASE WHEN ? is not null THEN ? ELSE Code_postal END), Libelle_acheminement = (CASE WHEN ? is not null THEN ? ELSE Libelle_acheminement END), "
 				+ "Ligne_5 = (CASE WHEN ? is not null THEN ? ELSE Ligne_5 END), Latitude = (CASE WHEN ? != 0.0 THEN ? ELSE Latitude END), Longitude = (CASE WHEN ? != 0.0 THEN ? ELSE Longitude END) "
 				+ "WHERE Code_commune_INSEE = ?";
-		try (Connection con = JDBCConfiguration.getConnexionBDD();) {
-			PreparedStatement ps = con.prepareStatement(requete);
+		try (Connection con = JDBCConfiguration.getConnexionBDD();
+				PreparedStatement ps = con.prepareStatement(requete);) {
 			ps.setString(1, ville.getNomCommune());
 			ps.setString(2, ville.getNomCommune());
 			ps.setString(3, ville.getCodePostal());
@@ -140,20 +145,22 @@ public class VilleDAOImpl implements VilleDAO {
 			}
 			ps.close();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(), e);
+			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(),
+					e);
 		}
 		return booleanInsert;
 	}
 
 	public void deleteVille(String codeCommune) {
 		String requete = "DELETE FROM ville_france WHERE Code_commune_INSEE = ?";
-		try (Connection con = JDBCConfiguration.getConnexionBDD();) {
-			PreparedStatement ps = con.prepareStatement(requete);
+		try (Connection con = JDBCConfiguration.getConnexionBDD();
+				PreparedStatement ps = con.prepareStatement(requete);) {
 			ps.setString(1, codeCommune);
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(), e);
+			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(),
+					e);
 		}
 	}
 
