@@ -8,9 +8,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class JDBCConfiguration {
+
+	private JDBCConfiguration() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Bean
 	public static Connection getConnexionBDD() {
-		
+
 		String url = "jdbc:mysql://127.0.0.1:3306/twic_mysql?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
 		String user = "root";
 		String passwd = "mysecretpassword";

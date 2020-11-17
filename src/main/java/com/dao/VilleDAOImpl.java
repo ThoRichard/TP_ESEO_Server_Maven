@@ -12,8 +12,13 @@ import org.springframework.stereotype.Repository;
 import com.config.JDBCConfiguration;
 import com.dto.Ville;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @Repository
 public class VilleDAOImpl implements VilleDAO {
+	// assumes the current class is called MyLogger
+	private final static Logger LOGGER = Logger.getLogger(VilleDAO.class.getName());
 
 	/**
 	 * @return la liste de toutes les villes
@@ -35,9 +40,11 @@ public class VilleDAOImpl implements VilleDAO {
 						rs.getString(5), rs.getFloat(6), rs.getFloat(7));
 				villes.add(ville);
 			}
+			rs.close();
+			stmt.close();
 			con.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(), e);
 		}
 		return villes;
 	}
@@ -60,28 +67,17 @@ public class VilleDAOImpl implements VilleDAO {
 					villes.add(ville);
 				}
 			} catch (SQLException e) {
-				e.getErrorCode();
-				e.getMessage();
-				e.printStackTrace();
-				System.out.println("Une erreur s'est produite lors de la récupération des villes");
+				LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la récupération des villes : " + e.getMessage(), e);
 			}
+			ps.close();
 		} catch (SQLException e) {
-			e.getErrorCode();
-			e.getMessage();
-			e.printStackTrace();
-			System.out.println("Une erreur s'est produite lors de la connexion à la base");
+			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(), e);
 		}
 		return villes;
 	}
 
 	/**
-	 * @param codeCommune,         clé primaire (code INSEE)
-	 * @param nomCommune,          le nom de la commune
-	 * @param codePostal,          le code postal
-	 * @param libelleAcheminement, libelle postal
-	 * @param ligne,               complément de localisation
-	 * @param latitude,            latitude en degrés décimaux
-	 * @param longitude,           longitude en degrés décimaux
+	 * @param ville, ville à insérer
 	 * @return si l'insertion s'est correctement déroulé
 	 */
 	public boolean createVille(Ville ville) {
@@ -106,17 +102,16 @@ public class VilleDAOImpl implements VilleDAO {
 			if (rs >= 1) {
 				booleanInsert = true;
 			}
-
+			ps.close();
 		} catch (SQLException e) {
-			e.getErrorCode();
-			e.getMessage();
-			e.printStackTrace();
-			System.out.println("Une erreur s'est produite lors de la connexion à la base");
+			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(), e);
 		}
 		return booleanInsert;
 	}
 
-	@Override
+	/**
+	 * @param ville, informations à modifier dans la ville cible
+	 */
 	public boolean updateVille(Ville ville) {
 		boolean booleanInsert = false;
 		String requete = "UPDATE ville_france "
@@ -143,12 +138,9 @@ public class VilleDAOImpl implements VilleDAO {
 			if (rs >= 1) {
 				booleanInsert = true;
 			}
-
+			ps.close();
 		} catch (SQLException e) {
-			e.getErrorCode();
-			e.getMessage();
-			e.printStackTrace();
-			System.out.println("Une erreur s'est produite lors de la connexion à la base");
+			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(), e);
 		}
 		return booleanInsert;
 	}
@@ -159,11 +151,9 @@ public class VilleDAOImpl implements VilleDAO {
 			PreparedStatement ps = con.prepareStatement(requete);
 			ps.setString(1, codeCommune);
 			ps.executeUpdate();
+			ps.close();
 		} catch (SQLException e) {
-			e.getErrorCode();
-			e.getMessage();
-			e.printStackTrace();
-			System.out.println("Une erreur s'est produite lors de la connexion à la base");
+			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(), e);
 		}
 	}
 

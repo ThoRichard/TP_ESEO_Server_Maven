@@ -2,13 +2,13 @@ package com.dto;
 
 public class Ville {
 
-	public String codeCommune; 
-	public String nomCommune; 
-	public String codePostal;
-	public String libelleAcheminement; 
-	public String ligne;
-	public float latitude; 
-	public float longitude; 
+	private String codeCommune; 
+	private String nomCommune; 
+	private String codePostal;
+	private String libelleAcheminement; 
+	private String ligne;
+	private float latitude; 
+	private float longitude; 
 	
 	public Ville() {
 
