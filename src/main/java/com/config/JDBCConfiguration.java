@@ -26,7 +26,6 @@ public class JDBCConfiguration {
 		Connection conn = null;
 
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url, user, motDePasse);
 			System.out.println("Connecte");
 
