@@ -27,7 +27,7 @@ public class JDBCConfiguration {
 
 		try {
 			conn = DriverManager.getConnection(url, user, mCache);
-			System.out.println("Connecte");
+			LOGGER.log(Level.INFO,"Connecte");
 
 		} catch (Exception e) {
 			LOGGER.log(Level.WARNING, "Erreur : " + e.getMessage(),

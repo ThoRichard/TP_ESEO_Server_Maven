@@ -16,7 +16,6 @@ import com.dto.Ville;
 
 @RestController
 public class VilleControler {
-
 	@Autowired
 	VilleBLO villeService;
 
@@ -31,7 +30,6 @@ public class VilleControler {
 	@RequestMapping(value = "/ville", method = RequestMethod.GET)
 	@ResponseBody
 	public ArrayList<Ville> AllVilles() throws ClassNotFoundException, SQLException {
-		System.out.println("All Villes");
 		ArrayList<Ville> ville = villeService.getInfoVille(null);
 		return ville;
 	}
@@ -47,8 +45,6 @@ public class VilleControler {
 	@RequestMapping(value = "/ville/{codePostal}", method = RequestMethod.GET)
 	@ResponseBody
 	public ArrayList<Ville> findVille(@PathVariable String codePostal) throws ClassNotFoundException, SQLException {
-		System.out.println("find Ville");
-		System.out.println("codePostal = " + codePostal);
 		ArrayList<Ville> ville = villeService.getInfoVille(codePostal);
 		return ville;
 	}
@@ -64,7 +60,6 @@ public class VilleControler {
 	@RequestMapping(value = "/ville", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean appelPost(@RequestBody Ville ville) throws ClassNotFoundException, SQLException {
-		System.out.println("Appel POST");
 		boolean reponse = villeService.createVille(ville);
 		return reponse;
 	}
@@ -76,7 +71,6 @@ public class VilleControler {
 	@ResponseBody
 	public boolean appelPut(@PathVariable String Code_commune_INSEE, @RequestBody Ville ville)
 			throws ClassNotFoundException, SQLException {
-		System.out.println("Appel PUT");
 		ville.setCodeCommune(Code_commune_INSEE);
 		boolean reponse = villeService.updateVille(ville);
 		return reponse;
@@ -88,9 +82,8 @@ public class VilleControler {
 	@RequestMapping(value = "/ville/{Code_commune_INSEE}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public void appelDelete(@PathVariable String Code_commune_INSEE) throws ClassNotFoundException, SQLException {
-		System.out.println("Appel DELETE");
 		villeService.deleteVille(Code_commune_INSEE);
-		
+
 	}
 
 }
