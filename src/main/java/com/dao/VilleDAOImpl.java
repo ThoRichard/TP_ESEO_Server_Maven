@@ -120,6 +120,9 @@ public class VilleDAOImpl implements VilleDAO {
 	 */
 	public boolean updateVille(Ville ville) {
 		boolean booleanInsert = false;
+		/**
+		 * Requête ne mettant à jour que les champs modifiés 
+		 */
 		String requete = "UPDATE ville_france "
 				+ "SET Nom_commune = (CASE WHEN ? is not null THEN ? ELSE Nom_commune END), Code_postal = (CASE WHEN ? is not null THEN ? ELSE Code_postal END), Libelle_acheminement = (CASE WHEN ? is not null THEN ? ELSE Libelle_acheminement END), "
 				+ "Ligne_5 = (CASE WHEN ? is not null THEN ? ELSE Ligne_5 END), Latitude = (CASE WHEN ? != 0.0 THEN ? ELSE Latitude END), Longitude = (CASE WHEN ? != 0.0 THEN ? ELSE Longitude END) "

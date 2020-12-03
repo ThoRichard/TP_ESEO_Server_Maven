@@ -19,7 +19,7 @@ public class VilleBLOImpl implements VilleBLO {
 	 * @return liste des villes
 	 */
 	public ArrayList<Ville> getInfoVille(String codePostal) {
-		ArrayList<Ville> ville = null;
+		ArrayList<Ville> ville = new ArrayList<Ville>();
 		if (codePostal != null) {
 			ville = villeDAO.getInfoVilles(codePostal);
 		} else {
