@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 public class VilleDAOImpl implements VilleDAO {
 	// assumes the current class is called MyLogger
 	private static final Logger LOGGER = Logger.getLogger(VilleDAOImpl.class.getName());
+	private static final String ERROR_BDD = "Une erreur s'est produite lors de la connexion à la base : ";
 
 	/**
 	 * @return la liste de toutes les villes
@@ -45,7 +46,7 @@ public class VilleDAOImpl implements VilleDAO {
 			stmt.close();
 			con.close();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(),
+			LOGGER.log(Level.WARNING, ERROR_BDD + e.getMessage(),
 					e);
 		}
 		return villes;
@@ -74,7 +75,7 @@ public class VilleDAOImpl implements VilleDAO {
 			}
 			ps.close();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(),
+			LOGGER.log(Level.WARNING, ERROR_BDD + e.getMessage(),
 					e);
 		}
 		return villes;
@@ -108,7 +109,7 @@ public class VilleDAOImpl implements VilleDAO {
 			}
 			ps.close();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(),
+			LOGGER.log(Level.WARNING, ERROR_BDD + e.getMessage(),
 					e);
 		}
 		return booleanInsert;
@@ -145,7 +146,7 @@ public class VilleDAOImpl implements VilleDAO {
 			}
 			ps.close();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(),
+			LOGGER.log(Level.WARNING, ERROR_BDD + e.getMessage(),
 					e);
 		}
 		return booleanInsert;
@@ -159,7 +160,7 @@ public class VilleDAOImpl implements VilleDAO {
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, "Une erreur s'est produite lors de la connexion à la base : " + e.getMessage(),
+			LOGGER.log(Level.WARNING, ERROR_BDD + e.getMessage(),
 					e);
 		}
 	}
